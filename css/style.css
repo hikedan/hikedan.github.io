@@ -1,5 +1,14 @@
 html {
     touch-action: manipulation;
+    font-family: "M PLUS Rounded 1c", sans-serif;
+    font-weight: 800;
+    text-align: center;
+    user-select: none;
+}
+
+button {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 900;
 }
 
 body {
@@ -17,11 +26,310 @@ main {
     margin: 0 auto;
     width: 100%;
     height: 100%;
+    background-image: url("../image/bg.png");
+    background-size: cover;
+    box-shadow: 3px 3px 7px 0px;
+    overflow: hidden;
 }
 
-div#game {
+#game {
+    position: relative;
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    border: 3px solid;
+}
+
+#game > div {
+  position: absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+}
+
+#game > div:not([id$="_w"]) {
+  pointer-events: none;
+}
+
+#title_logo {
+    position: absolute;
+    left: 0;
+    top: 20%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#title_logo img {
+    width: 100%;
+    filter: drop-shadow(3px 4px 2px #000000cc);
+}
+
+.infotext {
+  width: 100%;
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0 2%;
+  top:10%;
+  font-family: "M PLUS 1p", sans-serif;
+  
+  font-weight: 500;
+}
+
+
+.trans_b {
+    position: absolute;
+    background-color: transparent;
+    border-color: rgba(var(--color-pekora-rgb), 1);
+    border-radius: 50%;
+    font-size: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+    -ms-transform: translate(-50%, 0);
+}
+
+
+
+.trans_b:hover {
+  background-color: rgba(var(--color-pekora-rgb), 0.3);
+}
+
+.lyric_b {
+  position: absolute;
+
+}
+
+#start_b {
+  top: 40%;
+  left: 25%;
+}
+#tutrial_b {
+  top: 40%;
+  left: 75%;
+}
+#credit_b {
+  top: 70%;
+}
+.appear_w {
+    animation: fadeIn_w 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+.appearfast_w {
+    animation: fadeIn_w 0s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+.disappear_w {
+    animation: fadeOut_w 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+.disappearfast_w {
+    animation: fadeOut_w 0s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
+}
+
+#select_bs > div {
+  width: 100%;
+}
+
+@keyframes fadeIn_w {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+      /* display: block; */
+    }
+}
+
+@keyframes fadeOut_w {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+      /* display: none; */
+    }
+    100% {
+      opacity: 0;
+    }
+}
+
+
+.taiko {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: darkorange;
+  color: white;
+  border-style: solid;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  -ms-transform: translate(-50%, 0);
+}
+
+
+#target {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  border:  dashed 5px;
+  border-color: rgba(0,0,0, .3);
+  border-style: dashed;
+}
+
+.taikoshape {
+  border-radius: 50%;
+}
+.appear_taiko {
+  animation: taikomove .6s linear 1 forwards;
+}
+
+@keyframes taikomove {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+#intro {
+  position: absolute;
+  width: 100%;
+  top: 38%;
+}
+
+
+#call {
+  position: absolute;
+  padding: 0 10%;
+  width: 100%;
+  box-sizing: border-box;
+  top: 10%;
+}
+
+#call_face {
+  width: 100%;
+}
+
+#gameover {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0 10%;
+  width: 100%;
+  top: 20%;
+}
+#gameover_image {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 0 10%;
+  top: 30%;
+}
+#gameover_image > img {
+  width: 100%;
+}
+
+#status {
+  display: inline-flex;
+}
+#status > * {
+  text-align: left;
+}
+
+#score_st {
+  order: 1;
+  flex-basis: 35%;
+}
+
+#hp_st {
+  order: 2;
+  flex-basis: 35%;
+}
+
+#lucky_st {
+  order: 3;
+  flex-basis: 30%;
+}
+
+#howto_w, #howto2_w {
+  box-sizing: border-box;
+  padding: 0 3%;
+  width: 100%;
+}
+
+.special_list {
+  position: absolute;
+  top:5%;
+}
+
+.special_list dt {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.special_list dd {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+#howto_hosoku {
+  position: absolute;
+  top:50%;
+}
+#backfromhowto_b, #nexthowto {
+  position: absolute;
+  top:70%;
+}
+
+.holomenicon {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  background-size: contain;
+  border-style: solid;
+  border-radius: 50%;
+  filter: drop-shadow(4px 4px 6px #00000088);
+}
+
+.appear_icon {
+  animation: slideIn_icon 2s ease-in-out 1 forwards;
+}
+
+.disappear_icon {
+  animation: slideOut_icon 2s ease-in-out 1 forwards;
+}
+
+@keyframes slideIn_icon {
+  0% {
+    bottom: 12%;
+    left: -15%;
+  }
+  50% {
+    bottom: 12%;
+    left: 2%;
+  }  
+  100% {
+    bottom: 2%;
+    left: 2%;
+  }
+}
+
+@keyframes slideOut_icon {
+  0% {
+    bottom: 2%;
+    left: 2%;
+  }
+  50% {
+    bottom: 2%;
+    left: 2%;
+  }  
+  100% {
+    bottom: -10%;
+    left: 2%;
+  }
 }
