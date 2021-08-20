@@ -2,21 +2,90 @@
 <html>
 <head>
     <title>どどんどどんどんどんゲーム</title>
+    <script src="js/constants.js"></script>
+    <script src="js/size.js"></script>
+    <script src="js/SEs.js"></script>
     <script src="js/script.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p" rel="stylesheet">
+    <link rel="stylesheet" href="css/holocolor.css">
+    <link rel="stylesheet" href="css/style.css" id="style">
+    <style type="text/css" id="css_size"></style>
 
 </head>
 <body>
-<div id="container">
-
 <main>
     <div id="game">
-        <h1>どどんどどんどんどんゲーム</h1>
-        <div id="intro"></div>
-        <div id="drums"></div>
+        <div id="title_w">
+            <h1 id="title_logo">
+                <img src="image/title.png" alt="どどんどどんどんどんゲーム">
+            </h1>
+            <button id="start_b" class="trans_b">すたーと！</button>
+            <button id="tutrial_b" class="trans_b">特殊効果説明</button>
+            <button id="credit_b" class="trans_b"><nobr>くれじっと</nobr></button>
+        </div>
+        <div id="select_w">
+            <div id="select_tutrial" class="infotext">
+                誰が自己紹介するか予想しよう
+            </div>
+            <div id="select_bs">
+            </div>
+        </div>
+        <div id="play_w">
+            <div id="taiko1_tutrial" class="infotext">
+                選んだ掛け声のリズムに合わせて太鼓が降ってくるので、↓の丸に来たタイミングで押そう。
+            </div>
+            <div id="target" class="taikoshape">
+            </div>
+            <div id="taikos">
+            </div>
+            <div id="intro" class="intro">
+                
+            </div>
+            <div id="call">
+                <img id="call_face"></img>
+            </div>
+        </div>
+        <div id="gameover_w">
+            <div id="gameover">GAME OVER</div>
+            <div id="gameover_image">
+                <img src="image/gameover.png">
+            </div>
+        </div>
+        <div id="howto_w">
+            <div class="special_list">
+                <dt>ぺこら(10000点)</dt><dd>幸運ポイントが低いとマイメロ</dd>
+                <dt>るしあ(300点)</dt><dd>外すとメンヘラ化し即終了</dd>
+                <dt>マリン(300点)</dt><dd>当てると次のターンポイント3倍</dd>
+                <dt>フレア・ノエル(300点)</dt><dd>二人連続で当てると+5000点</dd>
+            </div>
+            <button id="nexthowto" class="trans_b">次へ</button>
+        </div>
+        <div id="howto2_w">
+            <div class="special_list">
+                <dt>かなた・ココ(300点)</dt><dd>二人連続で当てると+5000点</dd>
+                <dt>わため(300点)</dt><dd>当てるとリズムボーナス20倍</dd>
+                <dt>トワ(300点)</dt><dd>当てると幸運ポイントが1貯まる</dd>
+                <dt>ルーナ(300点)</dt><dd>当てるとHP全回復</dd>
+            </div>
+            <div id="howto_hosoku">※幸運ポイントが3になるとしばらくの間絶対当たる！！！</div>
+            <button id="backfromhowto_b" class="trans_b">もどる</button>
+        </div>
+        <div id="credit_w">
+            <ul>
+
+                <li>効果音ラボ</li>
+            </ul>
+            <button id="backfromcredit_b" class="trans_b">もどる</button>
+        </div>
+        <div id="status">
+            <div id="score_st">スコア <span id="score"></span></div>
+            <div id="hp_st">HP <span id="hp"></span></div>
+            <div id="lucky_st">幸運 <span id="lucky"></span></div>
+        </div>
+        <div id="holomenicons">
+        </div>
     </div>
 </main>
-
-</div>
 </body>
 </html>
