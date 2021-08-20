@@ -6,6 +6,13 @@ html {
     user-select: none;
 }
 
+a {
+  text-decoration: none;
+}
+a:visited{
+  color: #0000FF;
+}
+
 button {
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 900;
@@ -101,15 +108,15 @@ main {
 }
 
 #start_b {
-  top: 40%;
-  left: 25%;
+  top: 35%;
 }
 #tutrial_b {
-  top: 40%;
-  left: 75%;
+  top: 65%;
+  left: 25%;
 }
 #credit_b {
-  top: 70%;
+  top: 65%;
+  left: 75%;
 }
 .appear_w {
     animation: fadeIn_w 1s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards;
@@ -332,4 +339,29 @@ main {
     bottom: -10%;
     left: 2%;
   }
+}
+
+.credit_w {
+  box-sizing: border-box;
+  padding: 10% 3% 0 ;
+  width: 100%;
+}
+
+#backfromcredit_b {
+  position: absolute;
+  top: 70%;
+}
+
+.credit_list {
+  text-align: left;
+}
+.credit_list td {
+}
+
+.credit_list td:nth-of-type(1){
+  width: 46%;
+}
+.credit_list td:nth-of-type(2),
+.credit_list td:nth-of-type(3){
+  width: 30%;
 }

@@ -31,8 +31,9 @@ const setPosSize = (gw, gh) => {
     insertRule("#gameover", "font-size", gh * .06);
     insertRule("#status", "font-size", gh * .028);
     insertRule("#status", "height", gh * .033);
-    insertRule("#howto_w dd", "font-size", gh * .025);
+    insertRule(".howto_w dd", "font-size", gh * .025);
     insertRule(".holomenicon", "width", gh * .08);
     insertRule(".holomenicon", "height", gh * .08);
     insertRule(".holomenicon", "border-width", gh * .003);
+    insertRule(".credit_list td", "height", gh * .08);
 }

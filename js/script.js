@@ -14,6 +14,8 @@ class Game {
             "title": {},
             "tutrial": {},
             "tutrial2": {},
+            "credit": {},
+            "credit2": {},
             "select": {},
             "title": {},
             "kakegoe1": {},
@@ -103,7 +105,27 @@ class Game {
             else if (this.scene == "tutrial2") {
                 this.setScene("title")
             }
+            else if (this.scene == "tutrial") {
+                this.setScene("tutrial2")
+            }
+            else if (this.scene == "tutrial2") {
+                this.setScene("title")
+            }
         }
+
+
+        this.container.querySelector("#nextcredit").onclick = () => {
+            if (this.cur_window == "credit_w") {
+                this.setScene("credit2"); 
+            }
+        }
+
+        this.container.querySelector("#backfromcredit_b").onclick = () => {
+            if (this.cur_window == "credit2_w") {
+                this.setScene("title"); 
+            }
+        }
+
         if (typeof this.container.ontouchstart === "undefined") {
             this.container.onmousedown = mousedownEvent; 
         }
@@ -193,9 +215,9 @@ class Game {
         this.setHolomen(parseInt(Math.random() * Holomen.length));
 
         // 幸運0のときぺこちゃんをマイメロにする
-        // if (this.holomen === 0 && this.lucky === 0) {
-        //     this.setHolomen('mymelo');
-        // }
+        if (this.holomen === 0 && this.lucky === 0) {
+            this.setHolomen('mymelo');
+        }
 
 
         this.turn["taiko1_starttime"] = 0;
@@ -244,6 +266,12 @@ class Game {
                     break;
                 case "tutrial2":
                     this.setWindow('howto2_w');
+                    break;
+                case "credit":
+                    this.setWindow('credit_w');        
+                    break;
+                case "credit2":
+                    this.setWindow('credit2_w');
                     break;
                 case "select":
                     this.initTurn()
@@ -331,11 +359,6 @@ class Game {
                     this.setWindow('gameover_w'); 
                     SEs.play("gameover", ()=>this.setScene("restart_waitfromgameover"));
                     break;
-                case "credit":
-                    this.setWindow('credit_w');        
-
-                    break;
-
 
             }
         }
