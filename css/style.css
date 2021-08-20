@@ -263,6 +263,12 @@ main {
   flex-basis: 30%;
 }
 
+#lucky img,
+#hp img {
+  height: 80%;
+  filter: drop-shadow(1px 1px 1px #000000cc);
+}
+
 #howto_w, #howto2_w {
   box-sizing: border-box;
   padding: 0 3%;

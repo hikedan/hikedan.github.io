@@ -77,18 +77,18 @@ class Game {
                 this.turn["taiko1_times_player"].push(time)
                 const rhythmScore = this.calcRhythmScore(time - this.turn["taiko1_times"][this.turn["taiko1_count"]])
                 this.addScore(rhythmScore);
-                console.log(time, this.turn["taiko1_times"][this.turn["taiko1_count"]], rhythmScore);
+                // console.log(time, this.turn["taiko1_times"][this.turn["taiko1_count"]], rhythmScore);
                 this.turn["taiko1_count"]++;
 
             }
             else if (this.scene == "kakegoe2" && this.turn["taiko2_count"] < this.turn["lyric"].length) {
                 SEs.play("system/taiko");
-                const time = Date.now() - this.turn["taiko2_starttime"] - (window_delay + taiko_delay);
+                const time = Date.now() - this.turn["taiko2_starttime"] - ( + taiko_delay);
                 this.turn["taiko2_times_player"].push(time)
 
                 const rhythmScore = this.calcRhythmScore(time - this.turn["taiko2_times"][this.turn["taiko2_count"]])
                 this.addScore(rhythmScore);
-                console.log(time, this.turn["taiko2_times"][this.turn["taiko2_count"]], rhythmScore);
+                //  console.log(time, this.turn["taiko2_times"][this.turn["taiko2_count"]], rhythmScore);
 
                 this.turn["taiko2_count"]++;
             }
@@ -149,11 +149,74 @@ class Game {
         })
     }
 
-    setHolomen(holomen_n) {                    
+    isHolomen(men_m) {
+        if (0 <= men_m && men_m < Holomen.length) {
+            return 1;
+        }
+        else if (0 <= men_m - NotHolomen_ID_start && men_m - NotHolomen_ID_start  <= NotHolomen.length){
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    getMen(men_m) {
+
+        const m_type = this.isHolomen(men_m)
+        if (m_type===1) {
+            return Holomen[men_m];
+        }
+        else if (m_type===0) {
+            return NotHolomen[men_m - NotHolomen_ID_start];
+        }
+        else {
+            console.log("誰？")
+            return null;
+        }
+    }
+
+    getParent(men_m) {
+        const m_type = this.isHolomen(men_m);
+        if (m_type === 1) {
+            return this.getMen(men_m);
+        }
+        else if (m_type === 0) {
+            return Holomen[NotHolomen[men_m - NotHolomen_ID_start]["parent_id"]];
+        }
+        else {
+            return this.getMen(men_m);
+        }
+    }
+
+    setHolomen(m) {
+        // IDからホロメンかnotホロメンを得る
+        let holomen_n;
+        if (typeof m === "string") {
+            holomen_n = Holomen.findIndex(m2=>m2["key"] === m);
+            if (holomen_n < 0) {
+                holomen_n = NotHolomen.findIndex(m2=>m2["key"] === m);
+                if (holomen_n < 0) {
+                    console.log("誰？");
+                    return;
+                }
+                holomen_n += NotHolomen_ID_start;
+            }
+        }
+        else {
+            holomen_n = m;
+        }
+        this.setHolomenNum(holomen_n)
+    }
+
+    setHolomenNum(holomen_n) {
+
         this.turn["holomen"] = holomen_n;
-        this.container.querySelector("#intro").innerText = Holomen[this.turn["holomen"]].intro;
-        this.container.querySelector("#call_face").src = `image/photo/${Holomen[this.turn["holomen"]].key}.png`;
-        this.turn["lyric"] = Lyrics[Holomen[this.turn["holomen"]]["lyric_type"]];
+        if (this.isHolomen(this.turn["holomen"]) === 1) {
+            this.container.querySelector("#intro").innerText = this.getParent(this.turn["holomen"]).intro;
+        }
+        this.container.querySelector("#call_face").src = `image/photo/${this.getMen(this.turn["holomen"]).key}.png`;
+        this.turn["lyric"] = Lyrics[this.getMen(this.turn["holomen"])["lyric_type"]];
     }
 
     addScore(sc) {
@@ -163,20 +226,32 @@ class Game {
     }
 
     setScore(sc) {
-        this.score = sc;
-        this.container.querySelector("#score").innerText = this.score;
+        if (!isNaN(sc)) {
+            this.score = Math.min(SCORE_MAX, sc);
+            this.container.querySelector("#score").innerText = this.score;
+        }
+        else {
+            console.log("スコアがおかしなったぺこ")
+        }
     }
 
     setHp(hp) {
-        this.hp = hp;
-        this.container.querySelector("#hp").innerText = this.hp;
+        if (!isNaN(hp)) {
+            this.hp = hp;
+            this.container.querySelector("#hp").innerHTML = this.hp;
+            this.container.querySelector("#hp").innerHTML = [...Array(this.hp)].fill(`<img src="image/hp.png">`).join("");
+
+        }
+        else {
+            console.log("hpがおかしなったぺこ")
+        }
     }
     setLucky(lucky) {
 
         if (lucky < 3) {
             this.lucky = lucky;
         }
-        else {
+        else if (!isNaN(lucky)) {
 
             this.lucky = 3;
             if (this.luckyTime === 0) {
@@ -186,11 +261,15 @@ class Game {
                 SEs.play(file);
             }
         }
-        this.container.querySelector("#lucky").innerText = this.lucky;
+        else {
+            console.log("幸運ポイントがおかしなったぺこ")
+            return;
+        }
+        this.container.querySelector("#lucky").innerHTML = [...Array(this.lucky)].fill(`<img src="image/lucky.png">`).join("");
     }
 
     calcRhythmScore(d_ms) {
-        const isWatame = this.scene === "kakegoe2" && this.judge() && Holomen[this.turn["holomen"]].key === "watame";
+        const isWatame = this.scene === "kakegoe2" && this.judge() && this.getMen(this.turn["holomen"]).key === "watame";
         const watamehosei = isWatame ? 20 : 1;
         return parseInt(100 / ((d_ms * .03) ** 2 + 1)) * watamehosei;
     }
@@ -211,11 +290,9 @@ class Game {
         this.turn["selectedlyric"] = null;
         this.turn["mul"] = 1;
         this.turn["next_mul"] = 1;
-        // this.turn["holomen"] = 4;
         this.setHolomen(parseInt(Math.random() * Holomen.length));
-
         // 幸運0のときぺこちゃんをマイメロにする
-        if (this.holomen === 0 && this.lucky === 0) {
+        if (this.turn["holomen"] === 0 && this.lucky === 0) {
             this.setHolomen('mymelo');
         }
 
@@ -231,12 +308,12 @@ class Game {
         this.turn["taiko1_count"] = 0;
         this.turn["taiko2_count"] = 0;
         this.turn["choice"] = [this.turn["holomen"]];
-        while (this.turn["choice"].length < 3) {
-            const kouho = parseInt(Math.random() * (Holomen.length + NotHolomen.length));
-            if (this.turn["choice"].indexOf(kouho)<0) {
-                this.turn["choice"].push(kouho);
-            }
-        }
+        // while (this.turn["choice"].length < 3) {
+        //     const kouho = parseInt(Math.random() * (Holomen.length + NotHolomen.length));
+        //     if (this.turn["choice"].indexOf(kouho)<0) {
+        //         this.turn["choice"].push(kouho);
+        //     }
+        // }
         
         this.container.querySelector("#intro").style.display = "none";
         this.container.querySelector("#call").style.display = "none";
@@ -249,7 +326,7 @@ class Game {
 
     setScene(sc) {
         if (sc in this.scenes) {
-            console.log('scene:', sc)
+            // console.log('scene:', sc)
             this.scene = null;
             setTimeout(()=>{
                 this.scene = sc;
@@ -285,25 +362,25 @@ class Game {
                     this.turn["taiko1_times"].unshift(0);
                     const len = this.turn["taiko1_times"].slice(-1)[0] + window_delay + taiko_delay + taiko_delay_post;
                     setTimeout(()=>this.setScene("intro"), len);
-                    setTimeout(this.createTaiko1, 1000, this);
+                    setTimeout(this.createTaiko1, window_delay, this);
                     this.turn["taiko1_starttime"] = Date.now();
                     
                     break;
                 case "intro":
                     this.container.querySelector("#taiko1_tutrial").style.display = "none";
                     this.container.querySelector("#intro").style.display = "block";
-                    SEs.play(`taiko/${Holomen[this.turn["holomen"]].key}_intro`, ()=>this.setScene("kakegoe2"));
+                    SEs.play(`taiko/${this.getParent(this.turn["holomen"]).key}_intro`, ()=>this.setScene("kakegoe2"));
                     
                     break;
                 case "kakegoe2":
-                    const len2 = this.turn["taiko2_times"].slice(-1)[0] + window_delay + taiko_delay + taiko_delay_post;
+                    const len2 = this.turn["taiko2_times"].slice(-1)[0] + taiko_delay + taiko_delay_post;
                     setTimeout(()=>this.setScene("call"), len2);
-                    setTimeout(this.createTaiko2, 1000, this);
+                    setTimeout(this.createTaiko2, 0, this);
                     this.turn["taiko2_starttime"] = Date.now();
                     break;
                 case "call":
 
-                    const file = SEs.files.find(se=>se.startsWith(`taiko/${Holomen[this.turn["holomen"]].key}_call`));
+                    const file = SEs.files.find(se=>se.startsWith(`taiko/${this.getMen(this.turn["holomen"]).key}_call`));
                     SEs.play(file, ()=>this.setScene("result"));
                     this.container.querySelector("#call").style.display = "block";
                     break;
@@ -311,13 +388,13 @@ class Game {
                     {
                         if (this.judge()) {
                             SEs.play("atari", ()=>this.setScene("restart_wait"));
-                            this.addScore(Holomen[this.turn["holomen"]]["score"]);
+                            this.addScore(this.getMen(this.turn["holomen"])["score"]);
                             // ルーナボーナス
-                            if (Holomen[this.turn["holomen"]].key === "luna") {
+                            if (this.getMen(this.turn["holomen"]).key === "luna") {
                                 this.setHp(5);
                             }
                             // トワボーナス
-                            if (Holomen[this.turn["holomen"]].key === "towa") {
+                            if (this.getMen(this.turn["holomen"]).key === "towa") {
                                 this.setLucky(this.lucky + 1);
                             }
                         }
@@ -326,7 +403,7 @@ class Game {
                             const file = files[parseInt(Math.random() * files.length)];
                             this.setHp(this.hp - 1);
                             // るしあメンヘラ
-                            if (Holomen[this.turn["holomen"]].key === "rushia") {
+                            if (this.getMen(this.turn["holomen"]).key === "rushia") {
                                 this.container.querySelector("#call_face").src = `image/photo/rushia_miss.png`;
                                 this.setHp(0);
                                 SEs.play("taiko/rushia_miss");
@@ -368,7 +445,7 @@ class Game {
     }
 
     judge() {
-        return Lyrics.indexOf(this.turn["selectedlyric"]) === Lyrics.indexOf(this.turn["lyric"]);
+        return Lyrics.indexOf(this.turn["selectedlyric"]) === Lyrics.indexOf(this.turn["lyric"]) && this.isHolomen(this.turn["holomen"]);
     }
 
     setWindow(w, fast=false) {
@@ -433,10 +510,8 @@ class Game {
     }
 
     createTaiko2(this_) {
-        const holomen_n = this_.turn["holomen"];
-        const holomen =  Holomen[holomen_n];
+        const holomen =  this_.getParent(this_.turn["holomen"]);
         const lyric_type = holomen["lyric_type"];
-        // this_.createTaiko(this_, holomen_n);
         let t = 0;
 
         Lyrics[lyric_type].forEach((l,idx)=>{
@@ -466,22 +541,29 @@ class Game {
             // カップリングボーナス
             
             if (
-                Holomen[this.turn["holomen"]].key === 'flare' && Holomen[this.prevData["holomen"]].key === 'noel'
-                || Holomen[this.turn["holomen"]].key === 'noel' && Holomen[this.prevData["holomen"]].key === 'flare'
-                || Holomen[this.turn["holomen"]].key === 'coco' && Holomen[this.prevData["holomen"]].key === 'kanata'
-                || Holomen[this.turn["holomen"]].key === 'kanata' && Holomen[this.prevData["holomen"]].key === 'coco'
+                this.getMen(this.turn["holomen"]).key === 'flare' && Holomen[this.prevData["holomen"]].key === 'noel'
+                || this.getMen(this.turn["holomen"]).key === 'noel' && Holomen[this.prevData["holomen"]].key === 'flare'
+                || this.getMen(this.turn["holomen"]).key === 'coco' && Holomen[this.prevData["holomen"]].key === 'kanata'
+                || this.getMen(this.turn["holomen"]).key === 'kanata' && Holomen[this.prevData["holomen"]].key === 'coco'
             ) {
                 setTimeout(() => {
                     this.addScore(5000);
                 }, 1000);
             }
         }
-        const prevholomenicon = document.createElement("div");
-        prevholomenicon.classList.add("holomenicon", "appear_icon")
-        prevholomenicon.style.backgroundImage = `url(image/icon/${Holomen[this.turn["holomen"]].key}.jpg)`
-        prevholomenicon.style.borderColor = `var(--color-${Holomen[this.turn["holomen"]].key})`
-        this.container.querySelector("#holomenicons").appendChild(prevholomenicon);
 
+        const m_type = this.isHolomen(this.turn["holomen"])
+        if (m_type === 1) {
+            const prevholomenicon = document.createElement("div");
+            prevholomenicon.classList.add("holomenicon", "appear_icon")
+            prevholomenicon.style.backgroundImage = `url(image/icon/${this.getMen(this.turn["holomen"]).key}.jpg)`
+            prevholomenicon.style.borderColor = `var(--color-${this.getMen(this.turn["holomen"]).key})`
+            this.container.querySelector("#holomenicons").appendChild(prevholomenicon);
+        }
+        else if (m_type === 0) {
+            // Notホロメン
+            // const m = this.turn["holomen"] - NotHolomen_ID_start;
+        }
     }
 
 }

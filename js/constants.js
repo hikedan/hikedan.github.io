@@ -54,9 +54,9 @@ const Holomen = [
 ]
 
 const NotHolomen = [
-    {'name': 'マイメロ', 'key': 'mymelo', 'color': '', 'lyric_type': 0, 'intro': '', 'call1': 'マイメロ', 'call2': '', 'miss': '', 'pass': ''}, 
-    {'name': 'YAGOO', 'key': 'yagoo', 'color': '', 'lyric_type': 0, 'intro': '', 'call1': 'YAGOO', 'call2': '', 'miss': '', 'pass': ''}, 
-    {'name': '汗明', 'key': 'kanmei', 'color': '', 'lyric_type': 0, 'intro': '', 'call1': '汗明', 'call2': '', 'miss': '', 'pass': ''}, 
+    {'name': 'マイメロ', 'key': 'mymelo', 'parent_id': 0, 'color': '', 'lyric_type': 0, 'intro': '', 'call1': 'マイメロ', 'call2': '', 'miss': '', 'pass': '', 'score': 0}, 
+    {'name': 'YAGOO', 'key': 'yagoo', 'parent_id': 0, 'color': '', 'lyric_type': 0, 'intro': '', 'call1': 'YAGOO', 'call2': '', 'miss': '', 'pass': '', 'score': 0}, 
+    {'name': '汗明', 'key': 'kanmei', 'parent_id': 0, 'color': '', 'lyric_type': 0, 'intro': '', 'call1': '汗明', 'call2': '', 'miss': '', 'pass': '', 'score': 0}, 
 ]
 
 const AllMen = Holomen.concat(NotHolomen);
@@ -66,3 +66,7 @@ const taiko_offset = .65;
 const taiko_delay = 600 * taiko_offset;
 const taiko_delay_post = 600 * (1-taiko_offset);
 const window_delay = 1000;
+
+const NotHolomen_ID_start = 100;
+
+const SCORE_MAX = 999999;
