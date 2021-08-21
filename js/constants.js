@@ -50,7 +50,7 @@ const Holomen = [
     {'name1': "ココ",'name': '桐生ココ', 'key': 'coco', 'color': '#F38514', 'lyric_type': 1, 'intro': 'ホロライブ893期生、これが本物のヤクザだぞ☆', 'call1': '桐生ココ', 'call2': '', 'miss': '', 'pass': '', 'score': 300}, 
     {'name1': "わため",'name': '角巻わため', 'key': 'watame', 'color': '#F9AFB2', 'lyric_type': 2, 'intro': '配信画面にウンチが2つあるのは誰だ！', 'call1': '角巻わため', 'call2': '', 'miss': '', 'pass': '', 'score': 300}, 
     {'name1': "トワ",'name': '常闇トワ', 'key': 'towa', 'color': '#BA92CA', 'lyric_type': 3, 'intro': 'ホロライブの中で1番語彙力が無いのは誰だ！', 'call1': 'トワ様', 'call2': '', 'miss': '', 'pass': '', 'score': 300}, 
-    {'name1': "ルーナ",'name': '姫森ルーナ', 'key': 'luna', 'color': '#F7ABD5', 'lyric_type': 4, 'intro': '10%の力を出し切り、頑張って優勝目指します！', 'call1': '姫森ルーナ', 'call2': '', 'miss': '', 'pass': '', 'score': 300}, 
+    {'name1': "ルーナ",'name': '姫森ルーナ', 'key': 'luna', 'color': '#F7ABD5', 'lyric_type': 4, 'intro': '10%のちからをだしきり、がんばって、ゆうしょうめざします！', 'call1': '姫森ルーナ', 'call2': '', 'miss': '', 'pass': '', 'score': 300}, 
 ]
 
 const NotHolomen = [
