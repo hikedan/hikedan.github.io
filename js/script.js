@@ -53,13 +53,11 @@ class Game {
             if (this.cur_window == "title_w") {
                 this.isTutrial = true;
                 this.setScene("tutrial");
-                SEs.play("start");
             }
         }
         this.obj["credit_b"].onclick = () => {
             if (this.cur_window == "title_w") {
                 this.setScene("credit");
-                SEs.play("system/ok");
             }
         }
         this.obj["backfromcredit_b"].onclick = () => {
@@ -78,6 +76,7 @@ class Game {
                 const rhythmScore = this.calcRhythmScore(time - this.turn["taiko1_times"][this.turn["taiko1_count"]])
                 this.addScore(rhythmScore);
                 // console.log(time, this.turn["taiko1_times"][this.turn["taiko1_count"]], rhythmScore);
+                this.container.querySelector("#taiko_impact").classList.add("disappear_impact");
                 this.turn["taiko1_count"]++;
 
             }
@@ -89,6 +88,7 @@ class Game {
                 const rhythmScore = this.calcRhythmScore(time - this.turn["taiko2_times"][this.turn["taiko2_count"]])
                 this.addScore(rhythmScore);
                 //  console.log(time, this.turn["taiko2_times"][this.turn["taiko2_count"]], rhythmScore);
+                this.container.querySelector("#taiko_impact").classList.add("disappear_impact");
 
                 this.turn["taiko2_count"]++;
             }
@@ -100,16 +100,12 @@ class Game {
                 this.initGame();
             }
             else if (this.scene == "tutrial") {
-                this.setScene("tutrial2")
+                this.setScene("tutrial2");
+                SEs.play("system/taiko");
             }
             else if (this.scene == "tutrial2") {
-                this.setScene("title")
-            }
-            else if (this.scene == "tutrial") {
-                this.setScene("tutrial2")
-            }
-            else if (this.scene == "tutrial2") {
-                this.setScene("title")
+                this.setScene("title");
+                SEs.play("system/taiko");
             }
         }
 
@@ -125,6 +121,12 @@ class Game {
                 this.setScene("title"); 
             }
         }
+
+        Array.from(this.container.querySelectorAll(".trans_b")).forEach(e=>{
+            e.addEventListener("click", ()=>{
+                SEs.play("system/taiko");
+            })
+        })
 
         if (typeof this.container.ontouchstart === "undefined") {
             this.container.onmousedown = mousedownEvent; 
@@ -284,6 +286,9 @@ class Game {
         if (cur.length > 0) {
             cur[0].remove();
         }
+        const taiko_impact = this.container.querySelector("#taiko_impact")
+        taiko_impact.addEventListener("animationend", (ev) => {ev.currentTarget.classList.remove("disappear_impact");});
+        taiko_impact.addEventListener("animationcancel", (ev) => {ev.currentTarget.classList.remove("disappear_impact");});
     }
 
     initTurn() {
@@ -364,7 +369,8 @@ class Game {
                     setTimeout(()=>this.setScene("intro"), len);
                     setTimeout(this.createTaiko1, window_delay, this);
                     this.turn["taiko1_starttime"] = Date.now();
-                    
+
+
                     break;
                 case "intro":
                     this.container.querySelector("#taiko1_tutrial").style.display = "none";
@@ -393,10 +399,6 @@ class Game {
                             if (this.getMen(this.turn["holomen"]).key === "luna") {
                                 this.setHp(5);
                             }
-                            // トワボーナス
-                            if (this.getMen(this.turn["holomen"]).key === "towa") {
-                                this.setLucky(this.lucky + 1);
-                            }
                         }
                         else {
                             const files = SEs.files.filter(se=>se.startsWith("hazure"));
@@ -417,6 +419,11 @@ class Game {
                                 }
                             });
                         }
+                    }
+                    
+                    // トワボーナス
+                    if (this.getMen(this.turn["holomen"]).key === "towa") {
+                        this.setLucky(this.lucky + 1);
                     }
                     if (this.luckyTime > 0) {
                         this.luckyTime--;
@@ -480,7 +487,14 @@ class Game {
             div.classList.add(`l${idx}`);
             div.classList.add("lyric_b");
             div.append(e.map(e2=>e2.lyric).join(''));
-            div.style.top = (40 + ( idx / lyrics_num * 60)) + "%";
+            div.style.top = (30 + ( idx / lyrics_num * 60)) + "%";
+
+            const colors = Holomen.filter(m=>m["lyric_type"]==idx).map((m,idx,arr)=>{
+                return `rgba(var(--color-${m["key"]}-rgb), 1) ${(idx)/arr.length * 100}%, ` +
+                       `rgba(var(--color-${m["key"]}-rgb), 1) ${(idx+1)/arr.length * 100}%`;
+            }).join(", ")
+            div.style.borderImage = `linear-gradient(to left, ${colors}) 1`;
+
             this.container.querySelector("#select_bs").appendChild(div);
 
         })
@@ -493,6 +507,13 @@ class Game {
 
         this_.turn["selectedlyric"].forEach((l,idx)=>{
             const div = document.createElement("div");
+
+            const colors = Holomen.filter(m=>m["lyric_type"]===lyric_type).map((m,idx,arr)=>{
+                return `rgba(var(--color-${m["key"]}-rgb), 1) ${(idx)/arr.length * 100}%, ` +
+                       `rgba(var(--color-${m["key"]}-rgb), 1) ${(idx+1)/arr.length * 100}%`;
+            }).join(", ")
+            div.style.background = `conic-gradient(${colors})`;
+            
             div.append(l.lyric);
 
             setTimeout(() => {
@@ -516,6 +537,10 @@ class Game {
 
         Lyrics[lyric_type].forEach((l,idx)=>{
             const div = document.createElement("div");
+
+            const color = `rgba(var(--color-${holomen["key"]}-rgb), 1)`;
+            div.style.background = `${color}`;
+
             div.append(l.lyric);
 
             setTimeout(() => {
