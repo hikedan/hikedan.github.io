@@ -156,7 +156,7 @@ class App {
         ctl.querySelector(".ctl_offset input").addEventListener("change", (ev=>this.setOffset(ev.target.value)).bind(this));
         // tool
         ctl.querySelector(".ctl_loopmeasure input").addEventListener("change", (ev=>this.setLoopMeasure(ev.target.value)).bind(this));
-        ctl.querySelector(".ctl_loop input").addEventListener("change", (ev=>this.setLoop(ev.target.value)).bind(this));
+        ctl.querySelector(".ctl_loop input").addEventListener("change", (ev=>this.setLoop(ev.target.checked)).bind(this));
         ctl.querySelector(".ctl_playbackrate select").addEventListener("change", (ev=>this.setPlaybackRate(ev.target.value)).bind(this));
         ctl.querySelector(".ctl_intervalrate input").addEventListener("change", (ev=>this.setIntervalRate(ev.target.value)).bind(this));
         // status
@@ -229,7 +229,7 @@ class App {
     }
 
     setLoop(b) {
-        this.loop = b === true || b == "on" ? true : false;
+        this.loop = b;
     }
 
     getLoop() {
