@@ -1,0 +1,100 @@
+
+
+body {
+    margin: 0;
+    color: black;
+    font-size: 15px;
+}
+
+main {
+    background-color: #db7e7e;
+    /* border-radius: 50px; */
+    height: 606px;
+    width: 375px;
+}
+
+h1 {
+    display: none;
+}
+
+input[type="number"] {
+    width: 4em;
+}
+#content > * {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+#play_container {
+    position: relative;
+    width: 375px;
+    height: 211px;
+    background-color: white;
+}
+#play_container > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#player {
+    pointer-events: none;
+    opacity: .5;
+}
+
+
+.play_control .ctl_play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    -webkit-transform: translateY(-50%) translateX(-50%);
+}
+
+#control_container > * {
+    border: 1px dashed;
+    box-sizing: border-box;
+}
+
+
+.status_control {
+}
+
+.ctl_curmeasure {
+    height: 50px;
+    text-align: center;
+}
+
+.ctl_curmeasure button {
+    /* border: 2px solid black; */
+    border: none;
+    /* background-color: transparent; */
+    font-size: 1.4em;
+    padding: 10px 12px;
+}
+
+.ctl_curmeasure input {
+    
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.ctl_kind_loop > div {
+    display: inline-block;
+}
+
+.ctl_kind_loop {
+    display:flex;
+    justify-content: center;
+}
+.ctl_kind_loop label {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.ctl_kind_loop label i {
+    display: block;
+}

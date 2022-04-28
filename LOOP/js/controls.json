@@ -1,0 +1,19 @@
+[
+    {
+        "id": "bpm",
+        "name": "BPM",
+        "type": "number",
+        "params": [
+        ]
+    },
+    {
+        "id": "offset",
+        "name": "曲が始まるまでの時間[秒]",
+        "type": "number",
+        "params": [
+            {
+                "step":0.001
+            }
+        ]
+    }
+]
