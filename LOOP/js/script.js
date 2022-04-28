@@ -22,12 +22,12 @@ class App {
         this.setCurMeasure(0); // 現在いる小節
         this.f_loop_start = false;
         this.createEvents();
-        this.callAPI();
     }
 
     init() {
         const url = new URL(window.location.href);
         const params = url.searchParams;
+        this.callAPI();
 
         this.setSource(params.get("videoId") || 'GCUK_IyRTY8');
         this.setBPM(params.get("bpm") || 126);
@@ -45,11 +45,11 @@ class App {
 
     }
     onYouTubeIframeAPIReady() {
-        this.loadVideo();
+        this.loadVideo(this.videoId);
     }
 
 
-    loadVideo() {
+    loadVideo(videoId) {
         if (this.player) {
             this.stop();
             this.player.destroy()
@@ -149,7 +149,7 @@ class App {
         // -------------------------------------------
 
         // source
-        ctl.querySelector(".ctl_source input").addEventListener("change", (ev=>this.loadVideo(ev.target.value)).bind(this));
+        ctl.querySelector(".ctl_source input").addEventListener("change", (ev=>this.setSource(ev.target.value)).bind(this));
 
         // video
         ctl.querySelector(".ctl_bpm input").addEventListener("change", (ev=>this.setBPM(ev.target.value)).bind(this));
@@ -188,6 +188,8 @@ class App {
         })(v);
         this.videoId = videoId2;
         this.doc.querySelector(".source_control input").value = videoId2;
+        if (typeof YT !== 'undefined')
+            this.loadVideo();
     }
 
     // video
