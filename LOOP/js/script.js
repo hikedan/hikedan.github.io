@@ -229,7 +229,7 @@ class App {
     }
 
     setLoop(b) {
-        this.loop = !!b;
+        this.loop = b === true || b == "on" ? true : false;
     }
 
     getLoop() {
@@ -280,8 +280,8 @@ class App {
         const dst = this.doc.querySelector(".ext_control input");
 
         let v = location.pathname + "?"
-        v += `${"videoId"}=${this.getSource()}`;
-        v += `${"bpm"}=${this.getBPM()}`;
+        v += `${"videoId"}=${this.getSource()}&`;
+        v += `${"bpm"}=${this.getBPM()}&`;
         v += `${"offset"}=${this.getOffset()}`;
         
         dst.value = v;
