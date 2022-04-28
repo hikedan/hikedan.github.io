@@ -88,7 +88,7 @@ class App {
     }
 
     play() {
-        const time = this.getOffset() + this.getCurMeasure() * 60 / this.bpm * this.beat;
+        const time = this.getOffset() + this.getCurMeasure() * 60 / this.getBPM() * this.beat;
         this.player.seekTo(time);
         this.player.playVideo();
         this.f_loop_start = true;
@@ -106,7 +106,7 @@ class App {
     next() {
         const cur_measure = this.getCurMeasure() + (this.getLoop() ? 0 : this.getLoopMeasure());
         this.setCurMeasure(cur_measure);
-        this.loop_start_time = this.offset + 60 / this.bpm * this.beat * this.cur_measure;
+        this.loop_start_time = this.offset + 60 / this.getBPM() * this.beat * this.cur_measure;
         this.play();
         console.log(this.getCurMeasure());
     }
@@ -161,6 +161,9 @@ class App {
         ctl.querySelector(".ctl_intervalrate input").addEventListener("change", (ev=>this.setIntervalRate(ev.target.value)).bind(this));
         // status
         ctl.querySelector(".ctl_curmeasure input").addEventListener("change", (ev=>this.setCurMeasure(ev.target.value)).bind(this));
+        // ext
+        ctl.querySelector(".ctl_save").addEventListener("click", 
+        this.putURL.bind(this));
 
     }
 
@@ -192,12 +195,18 @@ class App {
             this.loadVideo();
     }
 
+    getSource() {
+        return this.videoId;
+    }
     // video
     setBPM(v) {
         const v2 = parseFloat(v);
         this.bpm = v2;
         this.doc.querySelector(".ctl_bpm input").value = v2;
+    }
 
+    getBPM() {
+        return this.bpm;
     }
     setOffset(v) {
         const v2 = parseFloat(v);
@@ -263,6 +272,18 @@ class App {
 
     // innerparams
     getDuration() {
-        return 60 / this.bpm * this.beat * this.loop_measure / this.rate;
+        return 60 / this.getBPM() * this.beat * this.loop_measure / this.rate;
+    }
+
+    // ext
+    putURL() {
+        const dst = this.doc.querySelector(".ext_control input");
+
+        let v = location.pathname + "?"
+        v += `${"videoId"}=${this.getSource()}`;
+        v += `${"bpm"}=${this.getBPM()}`;
+        v += `${"offset"}=${this.getOffset()}`;
+        
+        dst.value = v;
     }
 }
