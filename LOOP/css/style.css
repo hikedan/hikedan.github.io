@@ -7,24 +7,87 @@ body {
 }
 
 main {
-    background-color: #db7e7e;
     /* border-radius: 50px; */
     height: 606px;
     width: 375px;
+    background-color: #ccc;
 }
 
 h1 {
+    
+}
+
+
+#contents {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 28px);
+}
+
+#contents > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#menu {   
+    height: 28px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#menu > * {
+    float: right;
+    margin: 0 4px;
+}
+
+.content:not(.display) {
     display: none;
+}
+
+#maincontent {
+    background: #db7e7e;
+    background: -moz-linear-gradient( #ffd1c9 0%, #db7e7e 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffd1c9), to(#db7e7e));
+    background: -webkit-linear-gradient( #ffd1c9 0%, #db7e7e 100%);
+    background: -o-linear-gradient( #ffd1c9 0%, #db7e7e 100%);
+    background: linear-gradient( #ffd1c9 0%, #db7e7e 100%);
+}
+#questioncontent {
+    background: #eda95f;
+    background: -moz-linear-gradient( #ffedc9 0%, #eda95f 100%);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffedc9), to(#eda95f));
+    background: -webkit-linear-gradient( #ffedc9 0%, #eda95f 100%);
+    background: -o-linear-gradient( #ffedc9 0%, #eda95f 100%);
+    background: linear-gradient( #ffedc9 0%, #eda95f 100%);
+    overflow-y: scroll;
+    border: 3px solid #5e2727;
+}
+
+#infocontent {
+    background-color: white;
+}
+.info_container {   
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: fit-content;
+    margin: auto;
+    text-align: center;
 }
 
 input[type="number"] {
     width: 4em;
+    text-align: center;
 }
-#content > * {
-    position: relative;
-    top: 0;
-    left: 0;
-}
+
 
 #play_container {
     position: relative;
@@ -54,14 +117,14 @@ input[type="number"] {
     -webkit-transform: translateY(-50%) translateX(-50%);
 }
 
-#control_container > * {
-    border: 1px dashed;
+#maincontent > * {
+    border: 1px dashed #000000a1;
     box-sizing: border-box;
+    padding: 4px 2px;
+    margin: 4px 0;
 }
 
 
-.status_control {
-}
 
 .ctl_curmeasure {
     height: 50px;
@@ -71,9 +134,12 @@ input[type="number"] {
 .ctl_curmeasure button {
     /* border: 2px solid black; */
     border: none;
-    /* background-color: transparent; */
-    font-size: 1.4em;
+    background-color: #2936d9d4;
+    color: #f9f9f9;
+    font-size: 1.1em;
+    width: 40px;
     padding: 10px 12px;
+    border-radius: 35%;
 }
 
 .ctl_curmeasure input {
@@ -97,4 +163,48 @@ input[type="number"] {
 
 .ctl_kind_loop label i {
     display: block;
+}
+
+.input_param_container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.input_param_container > * {
+    width: 100%;
+    text-align: center;
+}
+
+input {
+    font-size: 17px;
+}
+
+.ext_control {
+    text-align: center;
+}
+
+.ctl_save {
+    width: 7em;
+}
+
+#questioncontent h3 {
+    text-decoration: underline;
+    text-underline-offset: 0.05em;
+}
+
+.hikedan_logo {
+    width: 50px;
+    border-radius: 50%;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+table td {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }

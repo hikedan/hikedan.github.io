@@ -27,11 +27,12 @@ class App {
     init() {
         const url = new URL(window.location.href);
         const params = url.searchParams;
+        this.displayContent(this.doc.getElementById("maincontent"));
         this.callAPI();
-
-        this.setSource(params.get("videoId") || 'GCUK_IyRTY8');
-        this.setBPM(params.get("bpm") || 126);
-        this.setOffset(params.get("offset") || 0.280); // Unit: sec
+        this.putURL();
+        this.setSource(params.get("videoId") || 'URR_Nv-6MZs');
+        this.setBPM(params.get("bpm") || 88);
+        this.setOffset(params.get("offset") || 0.515); // Unit: sec
         this.setLoopMeasure(2);
         this.setLoop(false);
         this.setIntervalRate(100);
@@ -119,7 +120,7 @@ class App {
     }
 
     createEvents() {
-        const ctl = this.doc.getElementById("control_container");
+        const ctl = this.doc.getElementById("maincontent");
 
         // play
         this.doc.body.addEventListener('keypress', (ev=>{
@@ -128,21 +129,23 @@ class App {
         this.doc.querySelector(".play_control").addEventListener("click", this.play_clicked.bind(this));
 
         // source
-        ctl.querySelector(".ctl_source input").addEventListener("click", this.stop.bind(this));
+        ctl.querySelector(".ctl_source input").addEventListener("focus", this.stop.bind(this));
 
 
         // video
-        ctl.querySelector(".ctl_bpm input").addEventListener("click", this.stop.bind(this));
-        ctl.querySelector(".ctl_offset input").addEventListener("click", this.stop.bind(this));
+        ctl.querySelector(".ctl_bpm input").addEventListener("focus", this.stop.bind(this));
+        ctl.querySelector(".ctl_offset input").addEventListener("focus", this.stop.bind(this));
         // tool
-        ctl.querySelector(".ctl_loopmeasure input").addEventListener("click", this.stop.bind(this));
-        ctl.querySelector(".ctl_loop input").addEventListener("click", this.stop.bind(this));
-        ctl.querySelector(".ctl_playbackrate select").addEventListener("click", this.stop.bind(this));
-        ctl.querySelector(".ctl_intervalrate input").addEventListener("click", this.stop.bind(this));
+        ctl.querySelector(".ctl_loopmeasure input").addEventListener("focus", this.stop.bind(this));
+        ctl.querySelector(".ctl_loop input").addEventListener("focus", this.stop.bind(this));
+        ctl.querySelector(".ctl_playbackrate select").addEventListener("focus", this.stop.bind(this));
+        ctl.querySelector(".ctl_intervalrate input").addEventListener("focus", this.stop.bind(this));
         // status
-        ctl.querySelector(".ctl_curmeasure input").addEventListener("click", this.stop.bind(this));
+        ctl.querySelector(".ctl_curmeasure input").addEventListener("focus", this.stop.bind(this));
         ctl.querySelector(".ctl_curmeasure button.ctl_prev2").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(-4*this.getLoopMeasure());}).bind(this));
         ctl.querySelector(".ctl_curmeasure button.ctl_prev").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(-1*this.getLoopMeasure());}).bind(this));
+        ctl.querySelector(".ctl_curmeasure button.ctl_prevhalf").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(-Math.ceil(.5*this.getLoopMeasure()));}).bind(this));
+        ctl.querySelector(".ctl_curmeasure button.ctl_nexthalf").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(Math.ceil(.5*this.getLoopMeasure()));}).bind(this));
         ctl.querySelector(".ctl_curmeasure button.ctl_next").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(1*this.getLoopMeasure());}).bind(this));
         ctl.querySelector(".ctl_curmeasure button.ctl_next2").addEventListener("click", (ev=>{this.stop();this.moveCurMeasure(4*this.getLoopMeasure());}).bind(this));
 
@@ -162,9 +165,12 @@ class App {
         // status
         ctl.querySelector(".ctl_curmeasure input").addEventListener("change", (ev=>this.setCurMeasure(ev.target.value)).bind(this));
         // ext
-        ctl.querySelector(".ctl_save").addEventListener("click", 
-        this.putURL.bind(this));
+        ctl.querySelector(".ctl_save").addEventListener("click", this.updateURL.bind(this));
 
+
+        // menu
+        this.doc.querySelector(".ctl_question").addEventListener("click", (ev=>this.onQuestionClicked()).bind(this));
+        this.doc.querySelector(".ctl_info").addEventListener("click", (ev=>this.onInfoClicked()).bind(this));
     }
 
     // events
@@ -276,14 +282,45 @@ class App {
     }
 
     // ext
-    putURL() {
-        const dst = this.doc.querySelector(".ext_control input");
 
-        let v = location.pathname + "?"
+    updateURL() {
+        this.createURL();
+        window.location.href = this.createURL();
+    }
+
+    putURL() {
+        this.doc.querySelector(".ext_control input").value = window.location.href;
+    }
+
+    createURL() {
+        
+        let v = location.origin + location.pathname + "?"
         v += `${"videoId"}=${this.getSource()}&`;
         v += `${"bpm"}=${this.getBPM()}&`;
         v += `${"offset"}=${this.getOffset()}`;
-        
-        dst.value = v;
+        return v;
+    }
+
+    onQuestionClicked(){
+        if (this.doc.getElementById("questioncontent").classList.contains("display")) {
+            this.displayContent(this.doc.getElementById("maincontent"));
+        }
+        else {
+            this.displayContent(this.doc.getElementById("questioncontent"));
+        }
+    }
+    onInfoClicked(){
+        if (this.doc.getElementById("infocontent").classList.contains("display")) {
+            this.displayContent(this.doc.getElementById("maincontent"));
+        }
+        else {
+            this.displayContent(this.doc.getElementById("infocontent"));
+        }
+    }
+
+    displayContent(elm) {
+        const contents = Array.from(this.doc.getElementsByClassName("content"));
+        contents.forEach(elm=>elm.classList.remove("display"));
+        elm.classList.add("display");
     }
 }

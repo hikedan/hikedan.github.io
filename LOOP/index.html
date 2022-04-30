@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>YouTube耳コピ練習効率化</title>
+    <title>YouTube部分再生ツール</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta property="og:url" content="https://hikedan.github.io/LOOP" />
     <meta property="og:type" content="website" />
@@ -16,12 +16,11 @@
 </head>
 <body>
 <main>
-    <div id="content">
-        <h1>YouTube耳コピ練習効率化</h1>
-        <div id="control_container">
+    <div id="contents">
+        <div id="maincontent" class="content">
             <div class="source_control">
                 <div class="ctl_source">
-                    動画ID
+                    ビデオID
                     <input type="text">
                 </div>    
             </div>
@@ -38,7 +37,9 @@
                 <div class="ctl_curmeasure">
                     <button class="ctl_prev2"><i class="fa-solid fa-backward-fast"></i></button>
                     <button class="ctl_prev"><i class="fa-solid fa-backward"></i></button>
-                    <input type="number">
+                    <button class="ctl_prevhalf"><i class="fa-solid fa-caret-left"></i></button>
+                    <input type="number" title="再生位置">
+                    <button class="ctl_nexthalf"><i class="fa-solid fa-caret-right"></i></button>
                     <button class="ctl_next"><i class="fa-solid fa-forward"></i></button>
                     <button class="ctl_next2"><i class="fa-solid fa-forward-fast"></i></button>
                 </div>                    
@@ -57,38 +58,135 @@
                     </div>
                 </div>
             </div>
-            <div class="video_control">
+            <div class="video_control input_param_container">
                 <div class="ctl_bpm">
                     <div>BPM</div>
                     <input type="number">
                 </div>    
                 <div class="ctl_offset">
-                    <div>曲が始まるまでの時間</div>
+                    <div>曲開始時間</div>
                     <input type="number" step="0.001">秒
                 </div>
             </div>
-            <div class="tool_control">
+            <div class="tool_control input_param_container">
                 <div class="ctl_intervalrate">
-                    <div>インターバルの速度</div>
+                    <div>無音時間の速度</div>
                     <input type="number" step="1" max="100">%
                 </div>
                 <div class="ctl_playbackrate">
-                    <div>音源の速度</div>
+                    <div>動画の速度</div>
                     <select name="playbackrate">
-                        <option>0.25</option>
-                        <option>0.5</option>
-                        <option selected="selected">1</option>
-                        <option>1.5</option>
-                        <option>2</option>
+                        <option value="0.25">x0.25</option>
+                        <option value="0.5">x0.5</option>
+                        <option value="1" selected="selected">x1</option>
+                        <option value="1.5">x1.5</option>
+                        <option value="2">x2</option>
                     </select>
                 </div>
             </div>
             <div class="ext_control">
                 <button class="ctl_save">保存</button>
-                <input type="text" readonly>
+                <input type="text" title="このページのURL" readonly style="display: none;">
             </div>
         </div>
+        <div id="questioncontent" class="content">
+            <h3>概要</h3>
+            <p>
+                このツールは、Youtube上にある動画の一部分をループして耳コピや練習の効率を上げることを目的として作られました。
+                
+            </p>
+            <h3>操作説明</h3>
+            <article>
+                <h4>ビデオID</h4>
+                <p>
+                    YoutubeのURLやビデオIDを指定すると、その動画が読み込まれます。
+                </p>
+                <h4>再生ボタン</h4>
+                <p>
+                    現在の設定に従って、部分再生します。背景のYoutubeプレイヤーは操作できません。
+                </p>
+                <h4>再生位置コントローラ</h4>
+                <table>
+                    <tr><td>前へ(大)</td><td><i class="fa-solid fa-backward-fast"></i></td><td>部分再生長x4戻る</td></tr>
+                  
+                    <tr><td>前へ(中)</td><td><i class="fa-solid fa-backward"></i></td><td>部分再生長戻る</td></tr>
+                    <tr><td>前へ(小)</td><td><i class="fa-solid fa-caret-left"></i></td><td>部分再生長/2(小数点以下切り上げ)戻る</td></tr>
+                    <tr><td colspan="2">再生位置</td><td>再生開始する小節</td></tr>
+                    <tr><td>次へ(小)</td><td><i class="fa-solid fa-caret-right"></i></td><td>部分再生長/2(小数点以下切り上げ)進む</td></tr>
+                    <tr><td>次へ(中)</td><td><i class="fa-solid fa-forward"></i></td><td>部分再生長進む</td></tr>
+                    <tr><td>次へ(大)</td><td><i class="fa-solid fa-forward-fast"></i></td><td>部分再生長x4進む</td></tr>
+                    <tr><td>部分再生長</td><td><i class="fa-solid fa-arrows-left-right-to-line"></i></td><td>部分再生する小節数</td></tr>
+                    <tr><td>ループ</td><td><i class="fa-solid fa-rotate-left"></i></td><td>ON:同じ所を何度も再生する<br>OFF:次部分再生が終了した所から再生する</td></tr>
+                </table>
+                <h4>BPM</h4>
+                <p>
+                    テンポを指定します。
+                </p>
+                <h4>曲開始時間</h4>
+                <p>
+                    0小節目(最初の小節)の時間を指定します。
+                </p>
+                <h4>無音時間の速度</h4>
+                <p>
+                    部分再生が終了してから次再生するまでの間隔を指定します。100%だと部分再生長と同じ時間になり、大きければ大きいほど無音時間が短くなります。
+                </p>
+                <h4>動画の速度</h4>
+                <p>
+                    動画の再生速度です。
+                </p>
+                <h4>保存ボタン</h4>
+                <p>
+                    このボタンを押すと、このページのURLにビデオID、BPM、曲開始時間が追加されます。押した後のページをブックマークに入れてご利用ください。
+                </p>
+            </article>
+            <h3>よくありそうな質問</h3>
+            <article>
+                <h4>Q. 「動画を再生できません」と出ます。</h4>
+                <p>
+                    A. ビデオIDの指定が間違っているか、アップロード者に外部埋め込みが許可されていない動画です。
+                </p>
+                <h4>Q. BPMが途中で変わる楽曲には対応していますか？</h4>
+                <p>
+                    A. 非対応です。
+                </p>
+                <h4>Q. 3拍子の楽曲には対応していますか？</h4>
+                <p>
+                    A. BPMを調節して1小節の長さが合うようにすれば一応使えます。
+                </p>
+                <h4>Q. 神アプリなので、課金したいのですがどこにしたらいいですか？</h4>
+                <p>
+                    A. 出来ません。良かったらTwitterフォローとかYouTubeチャンネル登録とかお願いします。
+                </p>
+            </article>
+        </div>
+        <div id="infocontent" class="content">
+            <div class="info_container">
+                <h1>YouTube部分再生ツール</h1>
+                <p>
+                    制作：弾け弾<br>
+                    <img src="../Hikedan_logo.jpg" class="hikedan_logo"><br>
+                    <a target="_blank" href="https://www.youtube.com/channel/UC_H8fc4Qj3wZa7ksD6boFyg">YouTube</a><br>
+                    <a target="_blank" href="https://twitter.com/Sou_SC_HKDN">Twitter</a><br>
+                    ご連絡はTwitter DMまで
+                </p>
+                <p>
+                    利用したサービス<br>
+                    <a target="_blank" href="https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site">GitHub Pages</a><br>
+                    <a target="_blank" href="https://developers.google.com/youtube/iframe_api_reference?hl=ja">Youtube Player API</a><br>
+                    <a target="_blank" href="https://fontawesome.com/">Font Awesome</a><br>
+                    
+                </p>
 
+            </div>
+        </div>
+    </div>
+    <div id="menu">
+        <div class="ctl_question">
+            <i class="fa-solid fa-circle-question"></i>
+        </div>
+        <div class="ctl_info">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
     </div>
 </main>
 </body>
