@@ -11,6 +11,7 @@ main {
     height: 606px;
     width: 375px;
     background-color: #ccc;
+    margin: 0 auto;
 }
 
 h1 {
