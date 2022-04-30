@@ -39,11 +39,12 @@ h1 {
     height: 28px;
     display: flex;
     flex-direction: row-reverse;
+    padding-top: 3px;
 }
 
 #menu > * {
     float: right;
-    margin: 0 4px;
+    padding: 0 7px;
 }
 
 .content:not(.display) {
@@ -207,8 +208,4 @@ table td {
     border-bottom: 1px solid black;
     border-left: 1px solid black;
     border-right: 1px solid black;
-}
-
-.share {
-    padding-top: 3px;
 }
